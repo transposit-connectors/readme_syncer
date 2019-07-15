@@ -3,10 +3,15 @@
     "transposit": {
       "dependencies": [{
         "name": "transposit/slack:v2.*.*",
-        "alias": "slack"
+        "alias": "slack",
+        "title": "Slack",
+        "description": "Authorize this connector if you want to use the Slack API."
       }, {
         "name": "transposit/slack_webhook:v1.*.*",
         "alias": "slack_webhook"
+      }, {
+        "name": "transposit/github:v3.*.*",
+        "alias": "github"
       }],
       "operations": [{
         "id": "webhook",
