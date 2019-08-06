@@ -17,26 +17,6 @@
         "alias": "google_calendar"
       }],
       "operations": [{
-        "id": "parse_from_base64",
-        "function": {
-          "parameters": [{
-            "name": "text",
-            "type": "STRING",
-            "required": true
-          }],
-          "js": "parse_from_base64.js"
-        }
-      }, {
-        "id": "encode_to_base64",
-        "function": {
-          "parameters": [{
-            "name": "text",
-            "type": "STRING",
-            "required": true
-          }],
-          "js": "encode_to_base64.js"
-        }
-      }, {
         "id": "webhook",
         "function": {
           "parameters": [{
@@ -53,18 +33,49 @@
           "webhook": true
         }
       }, {
-        "id": "get_slack_message",
+        "id": "find_blob_object",
         "function": {
           "parameters": [{
-            "name": "user",
+            "name": "owner",
             "type": "STRING"
+          }, {
+            "name": "repo",
+            "type": "STRING"
+          }, {
+            "name": "branch",
+            "type": "STRING"
+          }, {
+            "name": "path",
+            "default": {
+              "text": "."
+            },
+            "type": "STRING",
+            "required": true
+          }, {
+            "name": "filename",
+            "type": "STRING"
+          }, {
+            "name": "user",
+            "type": "OBJECT"
           }],
-          "js": "get_slack_message.js"
+          "js": "find_blob_object.js"
         }
       }, {
-        "id": "test_post_message",
-        "tql": {
-          "tql": "-- This SQL operation is useful to test the message you've\n-- constructed for your webhook. If you provide a Slack\n-- auth in \"Auth & user settings\", it will post a message\n-- to your Slackbot channel.\nSELECT * FROM slack.post_chat_message AS A\nJOIN this.get_slack_message AS B\nON A.$body.blocks = B.blocks\nAND A.$body.text = B.text\nWHERE A.$body.channel = (SELECT user_id from slack.test_auth)"
+        "id": "transfer_file",
+        "function": {
+          "parameters": [{
+            "name": "source_url",
+            "type": "STRING",
+            "required": true
+          }, {
+            "name": "target_url",
+            "type": "STRING",
+            "required": true
+          }, {
+            "name": "user",
+            "type": "OBJECT"
+          }],
+          "js": "transfer_file.js"
         }
       }],
       "dataConnections": [{
