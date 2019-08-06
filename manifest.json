@@ -12,6 +12,9 @@
       }, {
         "name": "transposit/github:v3.*.*",
         "alias": "github"
+      }, {
+        "name": "transposit/google_calendar:v1.*.*",
+        "alias": "google_calendar"
       }],
       "operations": [{
         "id": "parse_from_base64",
