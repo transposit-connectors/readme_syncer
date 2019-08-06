@@ -96,6 +96,9 @@
       }, {
         "ref": "google_calendar.raw",
         "requireConsumerSignin": true
+      }, {
+        "ref": "github.raw",
+        "requireConsumerSignin": true
       }],
       "javascriptAPIVersion": "3",
       "source": "src",
