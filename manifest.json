@@ -14,6 +14,26 @@
         "alias": "github"
       }],
       "operations": [{
+        "id": "parse_from_base64",
+        "function": {
+          "parameters": [{
+            "name": "text",
+            "type": "STRING",
+            "required": true
+          }],
+          "js": "parse_from_base64.js"
+        }
+      }, {
+        "id": "encode_to_base64",
+        "function": {
+          "parameters": [{
+            "name": "text",
+            "type": "STRING",
+            "required": true
+          }],
+          "js": "encode_to_base64.js"
+        }
+      }, {
         "id": "webhook",
         "function": {
           "parameters": [{
