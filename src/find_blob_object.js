@@ -6,7 +6,11 @@
     dir = match[1];
     filename = match[2];
   }
-  var gitPath = api.run("github.get_files_in_repo", {owner: params.owner, repo: params.repo, path: dir, ref: params.branch}, { asUser: params.user.id });
+  try {
+  	var gitPath = api.run("github.get_files_in_repo", {owner: params.owner, repo: params.repo, path: dir, ref: params.branch}, { asUser: params.user.id });
+  } catch (e) {
+    return e;
+  }
   var gitBlob = null;
   for (var i in gitPath) {
     if (gitPath[i].name === filename) {
