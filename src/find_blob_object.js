@@ -9,7 +9,7 @@
   try {
   	var gitPath = api.run("github.get_files_in_repo", {owner: params.owner, repo: params.repo, path: dir, ref: params.branch}, { asUser: params.user.id });
   } catch (e) {
-    return e;
+    return null;
   }
   var gitBlob = null;
   for (var i in gitPath) {
