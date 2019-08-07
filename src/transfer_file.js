@@ -7,6 +7,11 @@
   if (source && target) {
     var source_blob = api.run("this.find_blob_object", { owner: source.owner, path: source.path, repo: source.repo, branch: source.branch, user: params.user })[0];
     var target_blob = api.run("this.find_blob_object", { owner: target.owner, path: target.path, repo: target.repo, branch: target.branch, user: params.user })[0];
+    
+    // check to see that source file exists:
+    if (source_blob == null) {
+      return "Couldn't copy github url " + params.source_url + " because the file doesn't exist.";
+    }
     var body = { committer: { name: github_user.login, email: github_user.email },
                  message: "copied from " + params.source_url,
                  branch: target.branch,
