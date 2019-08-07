@@ -1,7 +1,6 @@
 (params) => {
   var dir = ".";
   var filename = params.path;
-  console.log(params);
   var match = params.path.match(/(.+)\/+(.*)/);
   if (match) {
     dir = match[1];

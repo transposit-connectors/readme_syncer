@@ -5,13 +5,17 @@
   var github_user = api.run('github.get_user_authenticated', {}, { asUser: params.user.id })[0];
 
   if (source && target) {
-    var git_blob = api.run("this.find_blob_object", { owner: source.owner, path: source.path, repo: source.repo, branch: source.branch, user: params.user })[0];
+    var source_blob = api.run("this.find_blob_object", { owner: source.owner, path: source.path, repo: source.repo, branch: source.branch, user: params.user })[0];
+    var target_blob = api.run("this.find_blob_object", { owner: target.owner, path: target.path, repo: target.repo, branch: target.branch, user: params.user })[0];
     var body = { committer: { name: github_user.login, email: github_user.email },
                  message: "copied from " + params.source_url,
                  branch: target.branch,
-                 content: git_blob.content,
-                 sha: git_blob.sha
+                 content: source_blob.content
                };
+    if (target_blob) {
+      console.log("hello " + target_blob);
+      body["sha"] = target_blob.sha;
+    }
     try {
       api.run("github.add_file_to_repo", { owner: target.owner, path: target.path, repo: target.repo, $body: body }, { asUser: params.user.id });
     } catch(e) {
