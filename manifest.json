@@ -65,14 +65,17 @@
         "function": {
           "parameters": [{
             "name": "source_url",
+            "description": "Github URL of the source file",
             "type": "STRING",
             "required": true
           }, {
             "name": "target_url",
+            "description": "Github URL of the target file",
             "type": "STRING",
             "required": true
           }, {
             "name": "user",
+            "description": "User object obtained from api.user",
             "type": "OBJECT"
           }],
           "js": "transfer_file.js"
