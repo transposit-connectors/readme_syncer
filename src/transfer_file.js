@@ -10,7 +10,7 @@
     
     // check to see that source file exists:
     if (source_blob == null) {
-      return "Couldn't copy github url " + params.source_url + " because the file doesn't exist.";
+      return "Couldn't copy github url " + params.source_url + " because the url is invalid.";
     }
     var body = { committer: { name: github_user.login, email: github_user.email },
                  message: "copied from " + params.source_url,
