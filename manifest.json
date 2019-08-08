@@ -109,6 +109,8 @@
       "javascriptAPIVersion": "3",
       "source": "src",
       "userSettingsDisplay": "GENERATED"
-    }
+    },
+    "description": "Transfer files between repos using a Slack slash command",
+    "displayName": "GitHub transfer slack command"
   }
 }
