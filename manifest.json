@@ -75,6 +75,11 @@
           }],
           "js": "transfer_file.js"
         }
+      }, {
+        "id": "get_sheet_values",
+        "tql": {
+          "tql": "SELECT {app: `values`[0], docs: `values`[1]} FROM google_sheets.get_sheet_values\n  WHERE range='Sheet1'\n  AND spreadsheetId='150bzpISrd4k3tbQ45alNM_c2Oh_VRUkE32PWVkfg2L0'\n  EXPAND BY `values`\n\n/*\n * For sample code and reference material, visit\n * https://www.transposit.com/docs/get-started/sql-quickstart\n */"
+        }
       }],
       "dataConnections": [{
         "ref": "slack_identify.raw",
