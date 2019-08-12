@@ -1,7 +1,7 @@
 (params) => {  
   var source = api.run('this.parse_github_url', {url: params.source_url})[0];
   var target = api.run('this.parse_github_url', {url: params.target_url})[0];
-  var github_user = api.run('github.get_user_authenticated', {}, { asUser: params.user.id })[0];
+  var github_user = api.run('github.get_user_authenticated', {})[0];
 
   if (source && target) {
     var source_blob = api.run("this.find_blob_object", { owner: source.owner, path: source.path, repo: source.repo, branch: source.branch, user: params.user })[0];

@@ -93,6 +93,11 @@
           }],
           "js": "parse_github_url.js"
         }
+      }, {
+        "id": "transfer_from_app_to_docs",
+        "tql": {
+          "tql": "SELECT * FROM this.transfer_file AS A JOIN this.get_sheet_values AS B\n  ON A.source_url = B.app\n  AND A.target_url = B.docs"
+        }
       }],
       "dataConnections": [{
         "ref": "slack_identify.raw",
