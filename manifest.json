@@ -140,7 +140,12 @@
       }],
       "javascriptAPIVersion": "3",
       "source": "src",
-      "userSettingsDisplay": "GENERATED"
+      "userSettingsDisplay": "GENERATED",
+      "appSettings": [{
+        "name": "docs_branch",
+        "type": "STRING",
+        "default": "jpwain/browse-apps"
+      }]
     },
     "description": "Sync READMEs from Apps to our Docs gallery",
     "displayName": "GitHub transfer slack command"
