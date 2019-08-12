@@ -90,12 +90,6 @@
             },
             "type": "STRING",
             "required": true
-          }, {
-            "name": "branch",
-            "default": {
-              "text": "jpwain/browse-apps"
-            },
-            "type": "STRING"
           }],
           "js": "parse_github_url.js"
         }
