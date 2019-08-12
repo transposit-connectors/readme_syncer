@@ -136,7 +136,7 @@
       "source": "src",
       "userSettingsDisplay": "GENERATED"
     },
-    "description": "Transfer files between repos using a Slack slash command",
+    "description": "Sync READMEs from Apps to our Docs gallery",
     "displayName": "GitHub transfer slack command"
   }
 }
