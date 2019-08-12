@@ -86,10 +86,16 @@
           "parameters": [{
             "name": "url",
             "default": {
-              "text": "https://github.com/transposit-connectors/applicant_tracker/blob/master/README.md"
+              "text": "https://github.com/transposit-connectors/applicant_tracker/blob/jpwain/browse-apps/README.md"
             },
             "type": "STRING",
             "required": true
+          }, {
+            "name": "branch",
+            "default": {
+              "text": "jpwain/browse-apps"
+            },
+            "type": "STRING"
           }],
           "js": "parse_github_url.js"
         }
