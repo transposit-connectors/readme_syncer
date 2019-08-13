@@ -12,22 +12,6 @@
         "alias": "google_sheets"
       }],
       "operations": [{
-        "id": "webhook",
-        "function": {
-          "parameters": [{
-            "name": "http_event",
-            "default": {
-              "text": "{   \"query_parameters\": {     \"api_key\": \"XXX\"   },   \"http_method\": \"POST\",   \"parsed_body\": {     \"channel_name\": \"XXX\",     \"user_id\": \"UXXX\",     \"user_name\": \"iggy\",     \"trigger_id\": \"XXX\",     \"team_domain\": \"my_domain\",     \"team_id\": \"TXXX\",     \"text\": \"\",     \"channel_id\": \"DXXX\",     \"command\": \"/test\",     \"token\": \"XXX\",     \"response_url\": \"https://hooks.slack.com/commands/TXXX/XXX/XXX\"   },   \"body\": \"token=XXX&team_id=TXXX&team_domain=my_domain&channel_id=DXXX&channel_name=XXX&user_id=UXXX&user_name=iggy&command=%2Ftest&text=&response_url=https%3A%2F%2Fhooks.slack.com%2Fcommands%2FTXXX%2FXXX%2FXXX&trigger_id=XXX\" }"
-            },
-            "type": "OBJECT"
-          }],
-          "js": "webhook.js"
-        },
-        "access": {
-          "requireApiKey": true,
-          "webhook": true
-        }
-      }, {
         "id": "find_blob_object",
         "function": {
           "parameters": [{
@@ -49,9 +33,6 @@
           }, {
             "name": "filename",
             "type": "STRING"
-          }, {
-            "name": "user",
-            "type": "OBJECT"
           }],
           "js": "find_blob_object.js"
         }
@@ -59,26 +40,30 @@
         "id": "transfer_file",
         "function": {
           "parameters": [{
-            "name": "app_url",
-            "description": "Github URL of the source file",
+            "name": "app_name",
+            "default": {
+              "text": "applicant_tracker"
+            },
             "type": "STRING",
             "required": true
           }, {
-            "name": "docs_url",
-            "description": "Github URL of the target file",
-            "type": "STRING",
-            "required": true
-          }, {
-            "name": "user",
-            "description": "User object obtained from api.user",
-            "type": "OBJECT"
+            "name": "from_app",
+            "default": {
+              "text": "true"
+            },
+            "type": "BOOLEAN"
           }],
           "js": "transfer_file.js"
         }
       }, {
         "id": "get_sheet_values",
         "tql": {
-          "tql": "SELECT {app: `values`[0], docs: `values`[1]} FROM google_sheets.get_sheet_values\n  WHERE range='Sheet1'\n  AND spreadsheetId='150bzpISrd4k3tbQ45alNM_c2Oh_VRUkE32PWVkfg2L0'\n  EXPAND BY `values`\n\n/*\n * For sample code and reference material, visit\n * https://www.transposit.com/docs/get-started/sql-quickstart\n */"
+          "parameters": [{
+            "name": "sheet",
+            "type": "STRING",
+            "required": true
+          }],
+          "tql": "SELECT {app: `values`[0], docs: `values`[1]} FROM google_sheets.get_sheet_values\n  WHERE range=@sheet\n  AND spreadsheetId='150bzpISrd4k3tbQ45alNM_c2Oh_VRUkE32PWVkfg2L0'\n  EXPAND BY `values`\n\n/*\n * For sample code and reference material, visit\n * https://www.transposit.com/docs/get-started/sql-quickstart\n */"
         }
       }, {
         "id": "parse_github_url",
@@ -99,7 +84,26 @@
       }, {
         "id": "transfer_from_app_to_docs",
         "tql": {
-          "tql": "SELECT * FROM this.transfer_file AS A JOIN this.get_sheet_values AS B\n  ON A.app_url = B.app\n  AND A.docs_url = B.docs"
+          "parameters": [{
+            "name": "sheet",
+            "default": {
+              "text": "Sheet1"
+            },
+            "type": "STRING"
+          }],
+          "tql": "SELECT * FROM this.transfer_file AS A JOIN this.get_sheet_values AS B\n  ON A.app_url = B.app\n  AND A.docs_url = B.docs\n  WHERE B.sheet = @sheet"
+        }
+      }, {
+        "id": "transfer_from_docs_to_apps",
+        "tql": {
+          "parameters": [{
+            "name": "sheet",
+            "default": {
+              "text": "Sheet2"
+            },
+            "type": "STRING"
+          }],
+          "tql": "SELECT * FROM this.transfer_file AS A JOIN this.get_sheet_values AS B\n  ON A.app_url = B.docs\n  AND A.docs_url = B.app\n  WHERE B.sheet = @sheet"
         }
       }],
       "dataConnections": [{
