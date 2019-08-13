@@ -147,6 +147,10 @@
         "name": "docs_branch",
         "type": "STRING",
         "default": "jpwain/browse-apps"
+      }, {
+        "name": "sheet",
+        "type": "STRING",
+        "default": "Sheet1"
       }]
     },
     "description": "Sync READMEs from Apps to our Docs gallery",
