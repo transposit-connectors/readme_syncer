@@ -137,6 +137,11 @@
       }],
       "javascriptAPIVersion": "3",
       "source": "src",
+      "userSettings": [{
+        "name": "committer_email",
+        "description": "Email to commit to github as",
+        "type": "STRING"
+      }],
       "userSettingsDisplay": "GENERATED",
       "appSettings": [{
         "name": "docs_branch",
