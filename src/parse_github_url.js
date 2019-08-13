@@ -1,5 +1,4 @@
-({url}) => {
-    let branch = env.get('docs_branch');
+({url, branch}) => {
     // e.g. https://github.com/transposit-connectors/applicant_tracker/blob/master/README.md
     var regex = new RegExp("(https:\/\/)*(github.com\/)*(.+?)\/(.+?)\/blob\/" + branch + "\/(.+)");
     // e.g. https://github.com/transposit-connectors/applicant_tracker/blob/master/README.md

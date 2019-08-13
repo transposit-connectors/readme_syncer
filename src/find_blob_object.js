@@ -7,7 +7,7 @@
     filename = match[2];
   }
   try {
-  	var gitPath = api.run("github.get_files_in_repo", {owner: params.owner, repo: params.repo, path: dir, ref: params.branch}, { asUser: params.user.id });
+  	var gitPath = api.run("github.get_files_in_repo", {owner: params.owner, repo: params.repo, path: dir, ref: params.branch});
   } catch (e) {
     return null;
   }
@@ -18,7 +18,7 @@
     }
   }
   if (gitBlob) {
-    return api.run("github.get_blob", { owner: params.owner, repo: params.repo, shaCode: gitBlob.sha }, { asUser: params.user.id })[0];
+    return api.run("github.get_blob", { owner: params.owner, repo: params.repo, shaCode: gitBlob.sha })[0];
   }
   return null;
 }

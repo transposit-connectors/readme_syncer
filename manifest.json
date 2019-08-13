@@ -59,12 +59,12 @@
         "id": "transfer_file",
         "function": {
           "parameters": [{
-            "name": "source_url",
+            "name": "app_url",
             "description": "Github URL of the source file",
             "type": "STRING",
             "required": true
           }, {
-            "name": "target_url",
+            "name": "docs_url",
             "description": "Github URL of the target file",
             "type": "STRING",
             "required": true
@@ -90,13 +90,16 @@
             },
             "type": "STRING",
             "required": true
+          }, {
+            "name": "branch",
+            "type": "STRING"
           }],
           "js": "parse_github_url.js"
         }
       }, {
         "id": "transfer_from_app_to_docs",
         "tql": {
-          "tql": "SELECT * FROM this.transfer_file AS A JOIN this.get_sheet_values AS B\n  ON A.source_url = B.app\n  AND A.target_url = B.docs"
+          "tql": "SELECT * FROM this.transfer_file AS A JOIN this.get_sheet_values AS B\n  ON A.app_url = B.app\n  AND A.docs_url = B.docs"
         }
       }],
       "dataConnections": [{
