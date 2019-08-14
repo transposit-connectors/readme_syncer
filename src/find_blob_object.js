@@ -1,4 +1,5 @@
 (params) => {
+  var CryptoJS = require("crypto-js");
   var dir = ".";
   var filename = params.path;
   var match = params.path.match(/(.+)\/+(.*)/);
@@ -17,7 +18,7 @@
       gitBlob = gitPath[i];
     }
   }
-  if (gitBlob) {
+  if (gitBlob) {    
     return api.run("github.get_blob", { owner: params.owner, repo: params.repo, shaCode: gitBlob.sha })[0];
   }
   return null;
