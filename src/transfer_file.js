@@ -53,12 +53,7 @@
 
   let new_sha = compute_sha(source_blob);
 
-  console.log(new_sha);
-  console.log(target_sha);
-  
-  console.log(compute_sha(docs_blob));
-  console.log(docs_blob.sha);
-  if (new_sha === source_blob.sha) {
+  if (new_sha === target_sha) {
     return `Skipped commit since files are the same`;
   }
   body["sha"] = target_sha;
@@ -81,11 +76,13 @@
     return base64;
   }
 
+  function byteCount(s) {
+    return encodeURI(s).split(/%..|./).length - 1;
+  }
+  
   function compute_sha(content) {
     let decoded = decode(content.content);
-    console.log(decoded);
-    console.log(content.size + ', ' + decoded.length);
-    let header = `blob ${content.size}\0`;
+    let header = `blob ${byteCount(decoded)}\0`;
     let store = header + decoded;
     return CryptoJS.SHA1(store).toString();
   }
