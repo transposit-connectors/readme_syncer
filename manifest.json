@@ -10,6 +10,9 @@
       }, {
         "name": "transposit/google_sheets:v1.*.*",
         "alias": "google_sheets"
+      }, {
+        "name": "tina/front_matter_parser:latest",
+        "alias": "front_matter_parser"
       }],
       "operations": [{
         "id": "find_blob_object",
