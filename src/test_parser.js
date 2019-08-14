@@ -6,6 +6,7 @@
     path: 'README.md'
   })[0];
   let content = blob.content;
+  return api.run('front_matter_parser.parse', {"$body.content": content});
 }
 
 /*
