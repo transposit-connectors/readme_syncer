@@ -10,7 +10,7 @@
     "owner": "transposit",
     "repo": "www",
     "branch": docs_branch,
-    "path": `${app_name}.md`
+    "path": `/src/apps/a/${app_name}.md`
   };
 
   let source = from_app ? app : docs;

@@ -59,16 +59,6 @@
           "js": "transfer_file.js"
         }
       }, {
-        "id": "get_sheet_values",
-        "tql": {
-          "parameters": [{
-            "name": "sheet",
-            "type": "STRING",
-            "required": true
-          }],
-          "tql": "SELECT {app: `values`[0], docs: `values`[1]} FROM google_sheets.get_sheet_values\n  WHERE range=@sheet\n  AND spreadsheetId='150bzpISrd4k3tbQ45alNM_c2Oh_VRUkE32PWVkfg2L0'\n  EXPAND BY `values`\n\n/*\n * For sample code and reference material, visit\n * https://www.transposit.com/docs/get-started/sql-quickstart\n */"
-        }
-      }, {
         "id": "parse_github_url",
         "function": {
           "parameters": [{
@@ -94,19 +84,22 @@
             },
             "type": "STRING"
           }],
-          "tql": "SELECT * FROM this.transfer_file AS A JOIN this.get_sheet_values AS B\n  ON A.app_url = B.app\n  AND A.docs_url = B.docs\n  WHERE B.sheet = @sheet"
+          "tql": "SELECT * FROM this.transfer_file AS A JOIN this.get_apps AS B\n  ON A.app_name = B[0]\n  WHERE A.from_app = true"
         }
       }, {
         "id": "transfer_from_docs_to_apps",
         "tql": {
-          "parameters": [{
-            "name": "sheet",
-            "default": {
-              "text": "Sheet2"
-            },
-            "type": "STRING"
-          }],
-          "tql": "SELECT * FROM this.transfer_file AS A JOIN this.get_sheet_values AS B\n  ON A.app_url = B.docs\n  AND A.docs_url = B.app\n  WHERE B.sheet = @sheet"
+          "tql": "SELECT * FROM this.transfer_file AS A JOIN this.get_apps AS B\n  ON A.app_name = B[0]\n  WHERE A.from_app = false"
+        }
+      }, {
+        "id": "get_apps",
+        "tql": {
+          "tql": "SELECT [\n  \"applicant_tracker\"\n]\n\n/*\n * For sample code and reference material, visit\n * https://www.transposit.com/docs/get-started/sql-quickstart\n */"
+        }
+      }, {
+        "id": "test_parser",
+        "function": {
+          "js": "test_parser.js"
         }
       }],
       "dataConnections": [{
