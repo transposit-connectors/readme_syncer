@@ -19,7 +19,8 @@
   var app_blob = api.run("this.find_blob_object", { owner: app.owner, path: app.path, repo: app.repo, branch: app.branch })[0];
   var docs_blob = api.run("this.find_blob_object", { owner: docs.owner, path: docs.path, repo: docs.repo, branch: docs.branch })[0];
 
-  var fm = api.run('front_matter_parser.parse', {"$body.content": docs_blob.content})[0];
+  var fm = docs_blob ? api.run('front_matter_parser.parse', {"$body.content": docs_blob.content})[0]
+    : {frontmatter: `layout: app_details.mustache\ntitle: ${app_name}\nsummary: \nlocation: https://console.transposit.com/t/transposit-sample/${app_name}\ntags: \n- 01_featured`};
 
   let source_blob, target_sha, source, target;
   if (from_app) {
@@ -27,7 +28,7 @@
     source_blob = app_blob;
     source = app;
     target = docs;
-    target_sha = docs_blob.sha;
+    target_sha = docs_blob ? docs_blob.sha : '';
   } else {
     docs_blob.content = encode(fm.body);
     source_blob = docs_blob;
