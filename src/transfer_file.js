@@ -1,4 +1,5 @@
 ({app_name, from_app}) => {
+  var CryptoJS = require("crypto-js");
   let docs_branch = env.get('docs_branch');
   var app = {
     "owner": "transposit-connectors",
@@ -13,13 +14,29 @@
     "path": `/src/apps/a/${app_name}.md`
   };
 
-  let source = from_app ? app : docs;
-  let target = from_app ? docs : app;
-
   var github_user = api.run('github.get_user_authenticated', {})[0];
 
-  var source_blob = api.run("this.find_blob_object", { owner: source.owner, path: source.path, repo: source.repo, branch: source.branch })[0];
-  var target_blob = api.run("this.find_blob_object", { owner: target.owner, path: target.path, repo: target.repo, branch: target.branch })[0];
+  var app_blob = api.run("this.find_blob_object", { owner: app.owner, path: app.path, repo: app.repo, branch: app.branch })[0];
+  var docs_blob = api.run("this.find_blob_object", { owner: docs.owner, path: docs.path, repo: docs.repo, branch: docs.branch })[0];
+
+  var fm = api.run('front_matter_parser.parse', {"$body.content": docs_blob.content})[0];
+
+  let source_blob, target_blob, target_sha;
+  if (from_app) {
+    app_blob.content = encode(fm.frontmatter + decode(app_blob.content));
+    source_blob = app_blob;
+    target_blob = docs_blob;
+    target_sha = docs_blob.sha;
+  } else {
+    docs_blob.content = encode(fm.body);
+    source_blob = docs_blob;
+    target_blob = app_blob;
+    target_sha = app_blob.sha;
+  }
+
+  console.log(target_sha)
+  console.log(encode(CryptoJS.SHA1(decode(target_blob.content))));
+
 
   // check to see that source file exists:
   if (source_blob == null) {
@@ -31,22 +48,32 @@
     return "Please set an email address: " + env.getBuiltin().appUrl;
   }
   var body = { committer: { name: github_user.login, email: commitEmail},
-    message: `Copied from ${source.owner}/${source.repo} on branch ${source.branch}`,
-    branch: target.branch,
+    message: `Copied from ${source_blob.owner}/${source_blob.repo} on branch ${source_blob.branch}`,
+    branch: target_blob.branch,
     content: source_blob.content
   };
-  if (source_blob.sha === target_blob.sha) {
+  if (source_blob.sha === target_sha) {
     return `Skipped commit since files are the same`;
   }
-  if (target_blob) {
-    body["sha"] = target_blob.sha;
-  }
+  body["sha"] = target_sha;
   try {
-    api.run("github.add_file_to_repo", { owner: target.owner, path: target.path, repo: target.repo, $body: body });
+    api.run("github.add_file_to_repo", { owner: target_blob.owner, path: target_blob.path, repo: target_blob.repo, $body: body });
   } catch(e) {
     return e;
   }
-  return `Copied from https://github.com/${source.owner}/${source.repo}/blob/${source.branch}/${source.path} to https://github.com/${target.owner}/${target.repo}/blob/${target.branch}/${target.path}`;
+  return `Copied from https://github.com/${source_blob.owner}/${source_blob.repo}/blob/${source_blob.branch}/${source_blob.path} to https://github.com/${target_blob.owner}/${target_blob.repo}/blob/${target_blob.branch}/${target_blob.path}`;
+
+  function decode(content) {
+    var parsedWordArray = CryptoJS.enc.Base64.parse(content.replace(/\n/g,""));
+    var parsedStr = parsedWordArray.toString(CryptoJS.enc.Utf8);
+    return parsedStr;
+  }
+
+  function encode(content) {
+    var wordArray = CryptoJS.enc.Utf8.parse(content);
+    var base64 = CryptoJS.enc.Base64.stringify(wordArray);
+    return base64;
+  }
 }
 
 /*
