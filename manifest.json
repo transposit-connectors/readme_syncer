@@ -97,7 +97,7 @@
       }, {
         "id": "get_apps",
         "tql": {
-          "tql": "SELECT [\n  \"applicant_tracker\"\n]\n\n/*\n * For sample code and reference material, visit\n * https://www.transposit.com/docs/get-started/sql-quickstart\n */"
+          "tql": "SELECT [\n  \"calendar_placeholder\",\n  \"algorithmia_demo\",\n  \"aws_ecs_ecr_cleanup\",\n  \"personalized_email\",\n  \"cloudwatch_transform_logs\",\n  \"github_transfer\",\n  \"gitable\",\n  \"birthday_reminders\",\n  \"okta_signal\",\n  \"athena_queries_to_slack\",\n  \"applicant_tracker\",\n  \"signal_raffle\",\n  \"cleanup_aws_s3\",\n  \"twilio_sendgrid_demo\",\n  \"pridebot\",\n  \"circleci_router\",\n  \"cal_slack_status\"\n]\n\n/*\n * For sample code and reference material, visit\n * https://www.transposit.com/docs/get-started/sql-quickstart\n */"
         }
       }, {
         "id": "test_parser",
