@@ -53,7 +53,7 @@
             },
             "type": "BOOLEAN"
           }, {
-            "name": "dryRun",
+            "name": "dry_run",
             "default": {
               "text": "true"
             },

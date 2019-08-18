@@ -8,7 +8,7 @@
     path: '/src/apps/a/applicant_tracker.md'
   })[0];
   let content = decode(blob.content);
-  return api.run('front_matter_parser.parse', {"$body.content": content});
+  return api.run('front_matter_parser.parse', {"$body.content": content, base64: false});
 
   function decode(content) {
     var parsedWordArray = CryptoJS.enc.Base64.parse(content.replace(/\n/g,""));

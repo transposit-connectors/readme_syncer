@@ -1,4 +1,4 @@
-({app_name, from_app}) => {
+({app_name, from_app, dry_run}) => {
   var CryptoJS = require("crypto-js");
   let docs_branch = env.get('docs_branch');
   var app = {
@@ -24,13 +24,20 @@
 
   let source_blob, target_sha, source, target;
   if (from_app) {
-    app_blob.content = encode("---\n" + fm.frontmatter + "\n---\n" + decode(app_blob.content));
+    var content = decode(app_blob.content);
+    var match = content.match(/^\s*(# [^\n]*)\s*([\s\S]*)/);
+    if (match) {
+      console.log('title: ' + match[1]);
+      app_blob.content = encode(`---\n${fm.frontmatter}\n---\n${match[2]}`);
+    } else {
+	  app_blob.content = encode(`---\n${fm.frontmatter}\n---\n${content}`);      
+    }
     source_blob = app_blob;
     source = app;
     target = docs;
     target_sha = docs_blob ? docs_blob.sha : '';
   } else {
-    docs_blob.content = encode(fm.body);
+    docs_blob.content = encode(`# ${fm.attributes.title}\n\n${fm.body}`);
     source_blob = docs_blob;
     source = docs;
     target = app;
@@ -55,11 +62,15 @@
   let new_sha = compute_sha(source_blob);
 
   if (new_sha === target_sha) {
-    return `Skipped commit since files are the same`;
+    if (dry_run) {
+      console.log('Skipped commit since files are the same');
+    } else {
+	  return 'Skipped commit since files are the same';
+    }
   }
   body["sha"] = target_sha;
   try {
-    if (dryRun) {
+    if (dry_run) {
       console.log(decode(body.content));
     } else {
       api.run("github.add_file_to_repo", { owner: target.owner, path: target.path, repo: target.repo, $body: body });      
