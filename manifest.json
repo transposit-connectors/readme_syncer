@@ -80,24 +80,12 @@
       }, {
         "id": "transfer_from_app_to_docs",
         "tql": {
-          "parameters": [{
-            "name": "sheet",
-            "default": {
-              "text": "Sheet1"
-            },
-            "type": "STRING"
-          }],
-          "tql": "SELECT * FROM this.transfer_file AS A JOIN this.get_apps AS B\n  ON A.app_name = B[0]\n  WHERE A.from_app = true"
+          "tql": "SELECT * FROM this.transfer_file AS A JOIN this.get_apps AS B\n  ON A.app_name = B.name\n  WHERE A.from_app = true\n  AND A.dry_run = true"
         }
       }, {
         "id": "transfer_from_docs_to_apps",
         "tql": {
-          "tql": "SELECT * FROM this.transfer_file AS A JOIN this.get_apps AS B\n  ON A.app_name = B[0]\n  WHERE A.from_app = false"
-        }
-      }, {
-        "id": "get_apps",
-        "tql": {
-          "tql": "SELECT [\n  \"calendar_placeholder\",\n  \"algorithmia_demo\",\n  \"aws_ecs_ecr_cleanup\",\n  \"personalized_email\",\n  \"cloudwatch_transform_logs\",\n  \"github_transfer\",\n  \"gitable\",\n  \"birthday_reminders\",\n  \"okta_signal\",\n  \"athena_queries_to_slack\",\n  \"applicant_tracker\",\n  \"signal_raffle\",\n  \"cleanup_aws_s3\",\n  \"twilio_sendgrid_demo\",\n  \"pridebot\",\n  \"circleci_router\",\n  \"cal_slack_status\"\n]\n\n/*\n * For sample code and reference material, visit\n * https://www.transposit.com/docs/get-started/sql-quickstart\n */"
+          "tql": "SELECT * FROM this.transfer_file AS A JOIN this.get_apps AS B\n  ON A.app_name = B.name\n  WHERE A.from_app = false\n  AND A.dry_run = true"
         }
       }, {
         "id": "test_parser",
@@ -108,6 +96,11 @@
         "id": "test_parser_decoded",
         "function": {
           "js": "test_parser_decoded.js"
+        }
+      }, {
+        "id": "get_apps",
+        "function": {
+          "js": "get_apps.js"
         }
       }],
       "dataConnections": [{

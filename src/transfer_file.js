@@ -27,7 +27,6 @@
     var content = decode(app_blob.content);
     var match = content.match(/^\s*(# [^\n]*)\s*([\s\S]*)/);
     if (match) {
-      console.log('title: ' + match[1]);
       app_blob.content = encode(`---\n${fm.frontmatter}\n---\n${match[2]}`);
     } else {
 	  app_blob.content = encode(`---\n${fm.frontmatter}\n---\n${content}`);      
@@ -63,9 +62,9 @@
 
   if (new_sha === target_sha) {
     if (dry_run) {
-      console.log('Skipped commit since files are the same');
+      return (`${app_name}: skipped commit since files are the same`);
     } else {
-	  return 'Skipped commit since files are the same';
+	  return `${app_name}: skipped commit since files are the same`;
     }
   }
   body["sha"] = target_sha;
