@@ -80,12 +80,26 @@
       }, {
         "id": "transfer_from_app_to_docs",
         "tql": {
-          "tql": "SELECT * FROM this.transfer_file AS A JOIN this.get_apps AS B\n  ON A.app_name = B.name\n  WHERE A.from_app = true\n  AND A.dry_run = true"
+          "parameters": [{
+            "name": "dry_run",
+            "default": {
+              "text": "true"
+            },
+            "type": "BOOLEAN"
+          }],
+          "tql": "SELECT * FROM this.transfer_file AS A JOIN this.get_apps AS B\n  ON A.app_name = B.name\n  WHERE A.from_app = true\n  AND A.dry_run = @dry_run"
         }
       }, {
         "id": "transfer_from_docs_to_apps",
         "tql": {
-          "tql": "SELECT * FROM this.transfer_file AS A JOIN this.get_apps AS B\n  ON A.app_name = B.name\n  WHERE A.from_app = false\n  AND A.dry_run = true"
+          "parameters": [{
+            "name": "dry_run",
+            "default": {
+              "text": "true"
+            },
+            "type": "STRING"
+          }],
+          "tql": "SELECT * FROM this.transfer_file AS A JOIN this.get_apps AS B\n  ON A.app_name = B.name\n  WHERE A.from_app = false\n  AND A.dry_run = @dry_run"
         }
       }, {
         "id": "test_parser",
