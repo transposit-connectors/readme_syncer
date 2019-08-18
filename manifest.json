@@ -52,6 +52,12 @@
               "text": "true"
             },
             "type": "BOOLEAN"
+          }, {
+            "name": "dryRun",
+            "default": {
+              "text": "true"
+            },
+            "type": "BOOLEAN"
           }],
           "js": "transfer_file.js"
         }
@@ -97,6 +103,11 @@
         "id": "test_parser",
         "function": {
           "js": "test_parser.js"
+        }
+      }, {
+        "id": "test_parser_decoded",
+        "function": {
+          "js": "test_parser_decoded.js"
         }
       }],
       "dataConnections": [{

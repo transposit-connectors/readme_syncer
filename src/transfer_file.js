@@ -59,7 +59,11 @@
   }
   body["sha"] = target_sha;
   try {
-    api.run("github.add_file_to_repo", { owner: target.owner, path: target.path, repo: target.repo, $body: body });
+    if (dryRun) {
+      console.log(decode(body.content));
+    } else {
+      api.run("github.add_file_to_repo", { owner: target.owner, path: target.path, repo: target.repo, $body: body });      
+    }
   } catch(e) {
     return e;
   }
