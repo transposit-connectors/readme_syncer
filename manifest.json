@@ -165,6 +165,6 @@
       }]
     },
     "description": "Sync READMEs from Apps to our Docs gallery",
-    "displayName": "GitHub transfer slack command"
+    "displayName": "Docs and App README syncer"
   }
 }
