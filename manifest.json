@@ -119,6 +119,15 @@
         "function": {
           "js": "get_apps.js"
         }
+      }, {
+        "id": "get_frontmatter",
+        "function": {
+          "parameters": [{
+            "name": "url",
+            "type": "STRING"
+          }],
+          "js": "get_frontmatter.js"
+        }
       }],
       "dataConnections": [{
         "ref": "slack_identify.raw",
