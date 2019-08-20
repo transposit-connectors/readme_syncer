@@ -10,6 +10,9 @@
       }, {
         "name": "tina/front_matter_parser:latest",
         "alias": "front_matter_parser"
+      }, {
+        "name": "transposit/sample_app_helper:latest",
+        "alias": "sample_app_helper"
       }],
       "operations": [{
         "id": "find_blob_object",
