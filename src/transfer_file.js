@@ -11,7 +11,7 @@
     "owner": "transposit",
     "repo": "www",
     "branch": docs_branch,
-    "path": `/src/apps/a/${app_name}.md`
+    "path": `src/apps/a/${app_name}.md`
   };
 
   var github_user = api.run('github.get_user_authenticated', {})[0];
@@ -19,7 +19,7 @@
   var app_blob = api.run("this.find_blob_object", { owner: app.owner, path: app.path, repo: app.repo, branch: app.branch })[0];
   var docs_blob = api.run("this.find_blob_object", { owner: docs.owner, path: docs.path, repo: docs.repo, branch: docs.branch })[0];
   
-  var fm_content = api.run("sample_app_helper.generate_frontmatter_for_app", {sample_app_url: `https://console.transposit.com/t/transposit-sample/${app_name}`})[0];
+  var fm_content = api.run("sample_app_helper.generate_frontmatter_for_app", {sample_app_url: `https://console.transposit.com/t/transposit-sample/${app_name}`})[0].frontmatter;
   var fm = docs_blob ? api.run('front_matter_parser.parse', {"$body.content": docs_blob.content})[0]
     : {frontmatter: fm_content};
 
