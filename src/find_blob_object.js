@@ -8,7 +8,12 @@
     filename = match[2];
   }
   try {
-  	var gitPath = api.run("github.get_files_in_repo", {owner: params.owner, repo: params.repo, path: dir, ref: params.branch});
+    var gitPath = api.run("github.get_files_in_repo", {
+      owner: params.owner,
+      repo: params.repo,
+      path: dir,
+      ref: params.branch,
+    });
   } catch (e) {
     return null;
   }
@@ -18,11 +23,15 @@
       gitBlob = gitPath[i];
     }
   }
-  if (gitBlob) {    
-    return api.run("github.get_blob", { owner: params.owner, repo: params.repo, shaCode: gitBlob.sha })[0];
+  if (gitBlob) {
+    return api.run("github.get_blob", {
+      owner: params.owner,
+      repo: params.repo,
+      shaCode: gitBlob.sha,
+    })[0];
   }
   return null;
-}
+};
 
 /*
  * For sample code and reference material, visit
