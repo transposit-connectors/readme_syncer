@@ -16,14 +16,14 @@
     "twilio_sendgrid_demo",
     "pridebot",
     "circleci_router",
-    "cal_slack_status"
+    "cal_slack_status",
   ];
   return apps.map((a) => {
     return {
-      name: a
-    }
+      name: a,
+    };
   });
-}
+};
 
 /*
  * For sample code and reference material, visit

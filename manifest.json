@@ -1,180 +1,222 @@
 {
   "v2": {
     "transposit": {
-      "dependencies": [{
-        "name": "transposit/slack_webhook:v1.*.*",
-        "alias": "slack_webhook"
-      }, {
-        "name": "transposit/github:v3.*.*",
-        "alias": "github"
-      }, {
-        "name": "tina/front_matter_parser:latest",
-        "alias": "front_matter_parser"
-      }, {
-        "name": "transposit/sample_app_helper:latest",
-        "alias": "sample_app_helper"
-      }],
-      "operations": [{
-        "id": "find_blob_object",
-        "function": {
-          "parameters": [{
-            "name": "owner",
-            "type": "STRING"
-          }, {
-            "name": "repo",
-            "type": "STRING"
-          }, {
-            "name": "branch",
-            "type": "STRING"
-          }, {
-            "name": "path",
-            "default": {
-              "text": "."
-            },
-            "type": "STRING",
-            "required": true
-          }, {
-            "name": "filename",
-            "type": "STRING"
-          }],
-          "js": "find_blob_object.js"
+      "dependencies": [
+        {
+          "name": "transposit/slack_webhook:v1.*.*",
+          "alias": "slack_webhook"
+        },
+        {
+          "name": "transposit/github:v3.*.*",
+          "alias": "github"
+        },
+        {
+          "name": "tina/front_matter_parser:latest",
+          "alias": "front_matter_parser"
+        },
+        {
+          "name": "transposit/sample_app_helper:latest",
+          "alias": "sample_app_helper"
         }
-      }, {
-        "id": "transfer_file",
-        "function": {
-          "parameters": [{
-            "name": "app_name",
-            "default": {
-              "text": "applicant_tracker"
-            },
-            "type": "STRING",
-            "required": true
-          }, {
-            "name": "from_app",
-            "default": {
-              "text": "true"
-            },
-            "type": "BOOLEAN"
-          }, {
-            "name": "dry_run",
-            "default": {
-              "text": "true"
-            },
-            "type": "BOOLEAN"
-          }],
-          "js": "transfer_file.js"
+      ],
+      "operations": [
+        {
+          "id": "find_blob_object",
+          "function": {
+            "parameters": [
+              {
+                "name": "owner",
+                "type": "STRING"
+              },
+              {
+                "name": "repo",
+                "type": "STRING"
+              },
+              {
+                "name": "branch",
+                "type": "STRING"
+              },
+              {
+                "name": "path",
+                "default": {
+                  "text": "."
+                },
+                "type": "STRING",
+                "required": true
+              },
+              {
+                "name": "filename",
+                "type": "STRING"
+              }
+            ],
+            "js": "find_blob_object.js"
+          }
+        },
+        {
+          "id": "transfer_file",
+          "function": {
+            "parameters": [
+              {
+                "name": "app_name",
+                "default": {
+                  "text": "applicant_tracker"
+                },
+                "type": "STRING",
+                "required": true
+              },
+              {
+                "name": "from_app",
+                "default": {
+                  "text": "true"
+                },
+                "type": "BOOLEAN"
+              },
+              {
+                "name": "dry_run",
+                "default": {
+                  "text": "true"
+                },
+                "type": "BOOLEAN"
+              }
+            ],
+            "js": "transfer_file.js"
+          }
+        },
+        {
+          "id": "parse_github_url",
+          "function": {
+            "parameters": [
+              {
+                "name": "url",
+                "default": {
+                  "text": "https://github.com/transposit-connectors/applicant_tracker/blob/jpwain/browse-apps/README.md"
+                },
+                "type": "STRING",
+                "required": true
+              },
+              {
+                "name": "branch",
+                "type": "STRING"
+              }
+            ],
+            "js": "parse_github_url.js"
+          }
+        },
+        {
+          "id": "transfer_from_app_to_docs",
+          "tql": {
+            "parameters": [
+              {
+                "name": "dry_run",
+                "default": {
+                  "text": "true"
+                },
+                "type": "BOOLEAN"
+              }
+            ],
+            "tql": "SELECT * FROM this.transfer_file AS A JOIN this.get_apps AS B\n  ON A.app_name = B.name\n  WHERE A.from_app = true\n  AND A.dry_run = @dry_run"
+          }
+        },
+        {
+          "id": "transfer_from_docs_to_apps",
+          "tql": {
+            "parameters": [
+              {
+                "name": "dry_run",
+                "default": {
+                  "text": "true"
+                },
+                "type": "STRING"
+              }
+            ],
+            "tql": "SELECT * FROM this.transfer_file AS A JOIN this.get_apps AS B\n  ON A.app_name = B.name\n  WHERE A.from_app = false\n  AND A.dry_run = @dry_run"
+          }
+        },
+        {
+          "id": "test_parser",
+          "function": {
+            "js": "test_parser.js"
+          }
+        },
+        {
+          "id": "test_parser_decoded",
+          "function": {
+            "js": "test_parser_decoded.js"
+          }
+        },
+        {
+          "id": "get_apps",
+          "function": {
+            "js": "get_apps.js"
+          }
+        },
+        {
+          "id": "get_frontmatter",
+          "function": {
+            "parameters": [
+              {
+                "name": "url",
+                "type": "STRING"
+              }
+            ],
+            "js": "get_frontmatter.js"
+          }
         }
-      }, {
-        "id": "parse_github_url",
-        "function": {
-          "parameters": [{
-            "name": "url",
-            "default": {
-              "text": "https://github.com/transposit-connectors/applicant_tracker/blob/jpwain/browse-apps/README.md"
-            },
-            "type": "STRING",
-            "required": true
-          }, {
-            "name": "branch",
-            "type": "STRING"
-          }],
-          "js": "parse_github_url.js"
-        }
-      }, {
-        "id": "transfer_from_app_to_docs",
-        "tql": {
-          "parameters": [{
-            "name": "dry_run",
-            "default": {
-              "text": "true"
-            },
-            "type": "BOOLEAN"
-          }],
-          "tql": "SELECT * FROM this.transfer_file AS A JOIN this.get_apps AS B\n  ON A.app_name = B.name\n  WHERE A.from_app = true\n  AND A.dry_run = @dry_run"
-        }
-      }, {
-        "id": "transfer_from_docs_to_apps",
-        "tql": {
-          "parameters": [{
-            "name": "dry_run",
-            "default": {
-              "text": "true"
-            },
-            "type": "STRING"
-          }],
-          "tql": "SELECT * FROM this.transfer_file AS A JOIN this.get_apps AS B\n  ON A.app_name = B.name\n  WHERE A.from_app = false\n  AND A.dry_run = @dry_run"
-        }
-      }, {
-        "id": "test_parser",
-        "function": {
-          "js": "test_parser.js"
-        }
-      }, {
-        "id": "test_parser_decoded",
-        "function": {
-          "js": "test_parser_decoded.js"
-        }
-      }, {
-        "id": "get_apps",
-        "function": {
-          "js": "get_apps.js"
-        }
-      }, {
-        "id": "get_frontmatter",
-        "function": {
-          "parameters": [{
-            "name": "url",
-            "type": "STRING"
-          }],
-          "js": "get_frontmatter.js"
-        }
-      }],
-      "dataConnections": [{
-        "ref": "slack_identify.raw",
-        "overrides": {
-          "swagger": {
-            "oauthConfig": {
-              "scope": "identity.basic"
-            },
-            "executionLimits": {
+      ],
+      "dataConnections": [
+        {
+          "ref": "slack_identify.raw",
+          "overrides": {
+            "swagger": {
+              "oauthConfig": {
+                "scope": "identity.basic"
+              },
+              "executionLimits": {}
+            }
+          },
+          "title": "Slack",
+          "description": "Used to identify you on Slack"
+        },
+        {
+          "ref": "slack_bot.raw",
+          "overrides": {
+            "swagger": {
+              "oauthConfig": {
+                "scope": "chat:write:bot"
+              },
+              "executionLimits": {}
             }
           }
         },
-        "title": "Slack",
-        "description": "Used to identify you on Slack"
-      }, {
-        "ref": "slack_bot.raw",
-        "overrides": {
-          "swagger": {
-            "oauthConfig": {
-              "scope": "chat:write:bot"
-            },
-            "executionLimits": {
-            }
-          }
+        {
+          "ref": "slack.raw"
+        },
+        {
+          "ref": "google_calendar.raw",
+          "requireConsumerSignin": true
+        },
+        {
+          "ref": "github.raw",
+          "requireConsumerSignin": true
         }
-      }, {
-        "ref": "slack.raw"
-      }, {
-        "ref": "google_calendar.raw",
-        "requireConsumerSignin": true
-      }, {
-        "ref": "github.raw",
-        "requireConsumerSignin": true
-      }],
+      ],
       "javascriptAPIVersion": "3",
       "source": "src",
-      "userSettings": [{
-        "name": "committer_email",
-        "description": "Email to commit to github as",
-        "type": "STRING"
-      }],
+      "userSettings": [
+        {
+          "name": "committer_email",
+          "description": "Email to commit to github as",
+          "type": "STRING"
+        }
+      ],
       "userSettingsDisplay": "GENERATED",
-      "appSettings": [{
-        "name": "docs_branch",
-        "type": "STRING",
-        "default": "jpwain/browse-apps"
-      }]
+      "appSettings": [
+        {
+          "name": "docs_branch",
+          "type": "STRING",
+          "default": "jpwain/browse-apps"
+        }
+      ]
     },
     "description": "Sync READMEs from Apps to our Docs gallery",
     "displayName": "Docs and App README syncer"
